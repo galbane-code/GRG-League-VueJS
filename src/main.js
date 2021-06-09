@@ -69,8 +69,8 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 const shared_data = {
-  // username: localStorage.username,
-  username: "hilla",
+  username: localStorage.username,
+  // username: "hilla",
   login(username) {
     localStorage.setItem("username", username);
     this.username = username;
@@ -103,6 +103,12 @@ new Vue({
         autoHideDelay: 3000
       });
     }
+    
+  },
+  mounted() {
+    // this.$router.push("/").catch(() => {
+    //   this.$forceUpdate();
+    // });
   },
   render: (h) => h(App)
 }).$mount("#app");

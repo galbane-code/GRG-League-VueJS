@@ -90,6 +90,39 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
+      <b-form-group
+        id="input-group-email"
+        label-cols-sm="3"
+        label="email:"
+        label-for="email"
+      >
+          <b-form-input
+            id="email"
+            type="text"
+            v-model="$v.form.email.$model"
+            :state="validateState('email')"
+          ></b-form-input>
+          <b-form-invalid-feedback v-if="!$v.form.email.required">
+            Email is required
+          </b-form-invalid-feedback>
+          <b-form-invalid-feedback v-else-if="!$v.form.email.verifyMail">
+            Email body is incorrect
+          </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-image"
+        label-cols-sm="3"
+        label="Image Url:"
+        label-for="imageUrl"
+      >
+        <b-form-input
+          id="imageUrl"
+          type="text"
+          v-model="$v.form.image_url.$model"
+        ></b-form-input>
+        </b-form-group>
+
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button
         type="submit"
@@ -142,6 +175,7 @@ export default {
         password: "",
         confirmedPassword: "",
         email: "",
+        image_url: "",
         submitError: undefined
       },
       countries: [{ value: null, text: "", disabled: true }],
@@ -166,6 +200,11 @@ export default {
       confirmedPassword: {
         required,
         sameAsPassword: sameAs("password")
+      },
+      image_url: {},
+      email: {
+        required,
+        verifyMail: email
       }
     }
   },
@@ -182,7 +221,7 @@ export default {
     async Register() {
       try {
         const response = await this.axios.post(
-          "https://test-for-3-2.herokuapp.com/user/Register",
+          "http://localhost:3000/Register",
           {
             username: this.form.username,
             password: this.form.password
@@ -212,6 +251,7 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
+        image_url: "",
         email: ""
       };
       this.$nextTick(() => {
