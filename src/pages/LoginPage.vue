@@ -41,6 +41,7 @@
         variant="primary"
         style="width:100px;display:block;"
         class="mx-auto w-100"
+        @click="Login"
         >Login</b-button
       >
       <div class="mt-2">
