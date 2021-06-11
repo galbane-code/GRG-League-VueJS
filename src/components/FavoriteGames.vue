@@ -40,7 +40,7 @@ export default {
       
       try {
         const response = await this.axios.get(
-          "http://localhost:3000/users/favoriteMatches",
+          `${this.$store.state.server_domain}users/favoriteMatches`,
         );
         // console.log(response);
         const games = response.data;
