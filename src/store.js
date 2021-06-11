@@ -7,6 +7,8 @@ const state = {
     eventLogs: [],
     teams: [],
     currentTeam: "",
+    players: {},
+    currentPlayer: ""
 }
 
 const actions = {
@@ -53,7 +55,23 @@ const actions = {
       // let src = $("td").text;
       // console.log(src);
       // $("td").append('<img id="redt" src="Images/redtick.jpg" />');
-    }
+    },
+    pushPlayer: (playerName, playerId) => {
+      if (!(playerName in state.players)){
+        state.players[playerName] = playerId;
+      }
+      
+    },
+    playerEventListener: () => {
+      $(`.table`).on("click", "td", function (row, $el, field) {
+        let playerName = $(this)[0].textContent;
+        if (playerName in state.players){
+          alert(playerName);
+          state.currentPlayer = playerName
+          main.router.push({name: 'playerPage', params: {playerName: playerName}});
+        }
+      });
+    },
 }
 
 export {state, actions}

@@ -42,6 +42,13 @@ export default {
             this.players = res.data.players
             this.$store.actions.setGames(games)
 
+            let self = this;
+            this.players.forEach(player => {
+                self.$store.actions.pushPlayer(player.name, player.player_id);
+            });
+
+
+
         } catch (error) {
             console.log("error in getTeamDetails")
             console.log(error);
@@ -57,12 +64,12 @@ export default {
     mounted() {
         this.getTeamDetails();
         this.teamEventListener();
-        this.playerEventListenerImage();
+        this.playerEventListener();
     },
     beforeRouteUpdate(){
         this.getTeamDetails();
         this.teamEventListener();
-        this.playerEventListenerImage();
+        this.playerEventListener();
     }, 
 }
 </script>
