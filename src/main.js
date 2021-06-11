@@ -9,6 +9,12 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes
 });
+Vue.use(VueAxios, axios);
+import { state as store_state, actions as store_actions } from "./store";
+const state = Vue.observable(store_state)
+const actions = Vue.observable(store_actions)
+const store = { state: state, actions: actions }
+Vue.prototype.$store = store
 
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
@@ -24,7 +30,8 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  TablePlugin
 } from "bootstrap-vue";
 [
   FormGroupPlugin,
@@ -37,9 +44,12 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin, 
-  InputGroupPlugin
+  InputGroupPlugin,
+  TablePlugin
 ].forEach((x) => Vue.use(x));
 Vue.use(Vuelidate);
+
+axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
   function(config) {
@@ -64,13 +74,11 @@ axios.interceptors.response.use(
   }
 );
 
-Vue.use(VueAxios, axios);
-
 Vue.config.productionTip = false;
 
 const shared_data = {
-  // username: localStorage.username,
-  username: "hilla",
+  username: localStorage.username,
+  // username: "hilla",
   login(username) {
     localStorage.setItem("username", username);
     this.username = username;
@@ -103,6 +111,14 @@ new Vue({
         autoHideDelay: 3000
       });
     }
+    
+  },
+  mounted() {
+    // this.$router.push("/").catch(() => {
+    //   this.$forceUpdate();
+    // });
   },
   render: (h) => h(App)
 }).$mount("#app");
+
+export {router}

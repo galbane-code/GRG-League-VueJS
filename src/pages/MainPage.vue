@@ -1,9 +1,13 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <LoginPage v-if="!$root.store.username"></LoginPage>
-    <FavoriteGames v-else></FavoriteGames>
-    <LeagueInfo></LeagueInfo>
+    <div class="left">
+      <LeagueInfo></LeagueInfo>
+    </div>
+    <div class="second">
+      <LoginPage v-if="!$root.store.username"></LoginPage>
+      <FavoriteGames  v-else></FavoriteGames>
+    </div>
   </div>
 </template>
 
@@ -31,5 +35,15 @@ export default {
 ::v-deep .blur .recipe-preview {
   pointer-events: none;
   cursor: default;
+}
+
+.container {
+    overflow: hidden; /* add this to contain floated children */
+}
+.left {
+    float:left; /* add this */
+}
+.right {
+    float: right; /* add this */
 }
 </style>

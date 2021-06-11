@@ -1,13 +1,21 @@
 <template>
-  <div>
+  <div class="container">
+  <div v-if="games[0] != '' ">
+    <h2 >Your Favorite Future Games</h2>
     <GamePreview
-      v-for="g in games"
-      :id="g.id" 
+      v-for="g in games.slice(0,3)"
+      :load="parseDate(g)"
+      :matchId="g.matchId" 
       :hostTeam="g.hostTeam" 
       :guestTeam="g.guestTeam" 
-      :date="g.date" 
-      :hour="g.hour" 
-      :key="g.id"></GamePreview>
+      :matchDate="g.matchDate" 
+      :matchHour="g.matchHour" 
+      :stadium="g.stadium" 
+      :key="g.matchId"></GamePreview>    
+  </div>
+  <div v-else>
+    <h2 >{{error}}</h2>
+  </div>
   </div>
 </template>
 
@@ -20,46 +28,39 @@ export default {
   }, 
   data() {
     return {
-      games: [
-        {
-          id:25,
-          hostTeam: "Maccabi Tel-Aviv",
-          guestTeam: "Hapoel Beer-Sheva",
-          date: "27/5/21",
-          hour: "20:00"
-        },
-        {
-          id:39,
-          hostTeam: "Hapoel Tel-Aviv",
-          guestTeam: "Maccabi Haifa",
-          date: "29/5/21",
-          hour: "20:00"
-        }
-      ]
+      games: [''],
+      error: "No Favorite Games Were Added"
     };
   },
-  // methods: {
-  //   async updateGames(){
-  //     console.log("response");
-  //     try {
-  //       const response = await this.axios.get(
-  //         "http://localhost:3000/games/favoriteGames",
-  //       );
-  //       const games = response.data.games;
-  //       this.games = [];
-  //       this.games.push(...games);
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.log("error in update games")
-  //       console.log(error);
-  //     }
-  //   }
-  // }, 
-  // mounted(){
-  //   console.log("favorite games mounted");
-  //   this.updateGames(); 
-  // }
+  methods: {
+    parseDate(game){      
+      game.matchDate = game.matchDate.split("T")[0]
+    },
+    async updateGames(){
+      
+      try {
+        const response = await this.axios.get(
+          `${this.$store.state.server_domain}users/favoriteMatches`,
+        );
+        // console.log(response);
+        const games = response.data;
+        this.games = []
+        games.forEach(element => {
+          this.games.push(...[element[0]])
+        });
+        ;
+      } catch (error) {
+        console.log("error in update games")
+        console.log(error);
+      }
+    }
+  }, 
+  mounted(){
+    this.updateGames(); 
+    console.log("favorite games mounted");
+  }
 };
 </script>
 
-<style></style>
+<style>
+</style>
