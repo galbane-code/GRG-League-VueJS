@@ -18,7 +18,10 @@ export default {
     },
     data() {
         return {
-            player: {}
+            player: {player_id: "", name: "", common_name: "", image: "",
+                    position: "", team_name: "", birth_date: "", birth_country: "",
+                    height: "", weight: "", nationality: ""
+            }
         }
     },
 
@@ -28,8 +31,13 @@ export default {
             const response = await this.axios.get(
             `${this.$store.state.server_domain}players/playerFullDetails/${playerId}`,
             );
-            console.log(response.data)
             this.player = response.data[0];
+
+            for (const [key, value] of Object.entries(this.player)) {
+                if (this.player[key] == null){
+                    this.player[key] = "missing data"
+                }
+            }
         }
     },
     mounted(){

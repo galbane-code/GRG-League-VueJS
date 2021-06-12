@@ -4,7 +4,7 @@
       <b>Game Id:</b> {{ matchId }}
     </div>
     <ul class="game-content">
-      <li> Host: {{ hostTeam }}</li>
+      <li v-on:click="clickTeamName($event)" value="${hostTeam}"> Host: {{ hostTeam }}</li>
       <li v-on:click="clickTeamName($event)" value="${guestTeam}"> Guest: {{ guestTeam }}</li>
       <li> Date: {{ matchDate }}</li>
       <li> Time: {{ matchHour }}</li>
@@ -47,8 +47,6 @@ export default {
   },
   methods: {
     async clickTeamName(event){
-      console.log(event.target.innerText);
-      console.log("hi")
       let team = event.target.innerText.split(" ")[1]
       this.$store.state.currentTeam = team;
       this.$router.push({name: 'teamPage', params: {teamName: team}})

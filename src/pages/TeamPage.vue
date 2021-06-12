@@ -13,7 +13,7 @@ export default {
     },
     data() {
         return {
-            teamId: -1,
+            teamId: null,
             teamName: "",
             players:[]
         };
@@ -29,7 +29,6 @@ export default {
             const response = await this.axios.get(
             `${this.$store.state.server_domain}teams/searchTeamByName/${this.$store.state.currentTeam}`,
             );
-            console.log(response.data)
             let team = response.data[0]
             this.teamId = team.team_id
             this.teamName = this.$store.state.currentTeam

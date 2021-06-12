@@ -1,5 +1,7 @@
 import axios from "axios";
+import $ from 'jquery'
 const main =  require("./main")
+
 const state = {
     server_domain: "http://localhost:3000/",
     futureGames: [],
@@ -8,7 +10,8 @@ const state = {
     teams: [],
     currentTeam: "",
     players: {},
-    currentPlayer: ""
+    currentPlayer: "",
+    favoriteGames: [],
 }
 
 const actions = {
@@ -60,7 +63,9 @@ const actions = {
       if (!(playerName in state.players)){
         state.players[playerName] = playerId;
       }
-      
+    },
+    pushGame: (matchId) => {
+      state.favoriteGames.push(matchId);
     },
     playerEventListener: () => {
       $(`.table`).on("click", "td", function (row, $el, field) {
@@ -72,6 +77,9 @@ const actions = {
         }
       });
     },
+    setTable: (oldTable, newTable) => {
+      oldTable = newTable;
+    }
 }
 
 export {state, actions}

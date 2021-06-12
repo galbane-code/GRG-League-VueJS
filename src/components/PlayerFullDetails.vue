@@ -10,7 +10,7 @@
       <li> Common Name: {{ common_name }}</li>
       <li> Image: <img src="${image}"/></li>
       <li> Position: {{ position }}</li>
-      <li> Team Name: {{ team_name }}</li>
+      <li v-on:click="moveToTeamPage($event)" value="${team_name}"> Team Name: {{ team_name }}</li>
       <li> Birth Date: {{ birth_date }}</li>
       <li> Birth Country: {{ birth_country }}</li>
       <li> Height: {{ height }}</li>
@@ -25,50 +25,46 @@ export default {
   name: "PlayerPreview",
   props: {
       player_id: {
-        type: Number,
-        required: true
+        value: [Number, String]
       },
       name: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
       common_name: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
       image: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
       position: {
-        type: Number,
-        required: true
+        value: [Number, String]
       },
       team_name: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
       birth_date: {
-        type: String,
-        required: true
       },
       birth_country: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
       height: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
       weight: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
       nationality: {
-        type: String,
-        required: true
+        value: [Number, String]
       },
   },
+  methods: {
+    async moveToTeamPage(event){
+      let team = event.target.innerText.split(": ")[1]
+      this.$store.state.currentTeam = team;
+      console.log(team)
+      this.$router.push({name: 'teamPage', params: {teamName: team}})
+    }
+  }
 }
 </script>
 

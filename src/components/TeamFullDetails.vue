@@ -43,8 +43,8 @@
 export default {
     props:{
         teamId: {
+          default: null,
             type: Number,
-            required: true,
         },
         teamName: {
             type: String,
