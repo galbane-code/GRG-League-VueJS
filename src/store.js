@@ -54,11 +54,6 @@ const actions = {
         }
       });
     },
-    playerEventListenerImage: () => {
-      // let src = $("td").text;
-      // console.log(src);
-      // $("td").append('<img id="redt" src="Images/redtick.jpg" />');
-    },
     pushPlayer: (playerName, playerId) => {
       if (!(playerName in state.players)){
         state.players[playerName] = playerId;
