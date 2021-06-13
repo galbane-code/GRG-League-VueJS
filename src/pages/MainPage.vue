@@ -46,4 +46,5 @@ export default {
 .right {
     float: right; /* add this */
 }
+
 </style>

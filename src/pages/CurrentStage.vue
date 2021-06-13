@@ -1,20 +1,21 @@
 <template>
   <div >
     <div class="container">
+      <h1 class="test3">Stage details</h1>
       <div class="first">
-        <h1 class="title">Past Games</h1>
+        <h1 class="test2">Past Games</h1>
         <b-table class="table" striped hover :items="this.$store.state.pastGames">
         </b-table>
         
       </div>
       <br/>
       <div class="third">
-        <h1 class="title">Past Matches Event Logs</h1>
+        <h1 class="test2">Past Matches Event Logs</h1>
         <b-table class="table" striped hover :items="this.$store.state.eventLogs"></b-table>
       </div>
       <br/>
       <div class="second">
-        <h1 class="title">Upcoming Games</h1>
+        <h1 class="test2">Upcoming Games</h1>
         <b-table class="table" striped hover :items="this.$store.state.futureGames"></b-table>
       </div>
     </div>

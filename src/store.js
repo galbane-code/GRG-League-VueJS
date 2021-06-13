@@ -49,11 +49,7 @@ const actions = {
         }
       });
     },
-    playerEventListenerImage: () => {
-      // let src = $("td").text;
-      // console.log(src);
-      // $("td").append('<img id="redt" src="Images/redtick.jpg" />');
-    }
+
 }
 
 export {state, actions}

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand :to="{ name: 'main' }">Superliga Vue</b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark" variant="dark" style="background-color:black">
+      <b-navbar-brand :to="{ name: 'main' }">Superliga</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
         <b-nav-item :to="{ name: 'search' }">Search</b-nav-item>
@@ -19,6 +19,7 @@
             {{$root.store.username}}
           </template>
           <b-dropdown-item :to="{ name: 'favoriteGames' }">Favorite Games</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'ProfilePage' }">Profile</b-dropdown-item>
           <b-dropdown-item href="#" @click="Logout">Log Out</b-dropdown-item>
         </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -45,26 +46,103 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/scss/form-style.scss";
 
-#app {
-  // font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  min-height: 100vh;
+body
+{
+  background-image: url('./assets/background.jpg');
+    background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+table thead tr {
+    background-color: #87a8d1 ;
+    color: #ffffff;
+    text-align: left;
+}
+
+table th,
+table td {
+    padding: 12px 15px;
+}
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #87a8d1 ;
 }
 
 #nav {
   padding: 30px;
 }
 
+
+
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #000000;
+}
+
+.card-body
+{
+  border-radius:20px;
+  color: #343a40 ;
+  background-color:#87a8d1;
+}
+.card.mb-2 {
+    border-radius: 20px;
+}
+
+h4,h6{
+  color: #343a40 ;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #ffffff;
 }
+
+.text-muted {
+    color: #0000 !important;
+    
+}
+
+ h1.test3 {
+  font-family: "Arial Black", sans-serif;
+  font-size: 4.7em;
+  text-align: center;
+  letter-spacing: -1px;
+  background-color: #87a8d1;
+  color: #ECECEC;
+  padding:5px;
+  border-radius: 12px;
+  margin-top: 8px;
+ }
+
+h1.test2 {
+  font-family: "Trebuchet MS", sans-serif;
+  font-size: 2em;
+  letter-spacing: -2px;
+  border-bottom: 2px solid black;
+  text-transform: uppercase;
+  margin-top: 15px;
+  text-align: center;
+ }
+
+
+@import "@/scss/form-style.scss";
 </style>
+
