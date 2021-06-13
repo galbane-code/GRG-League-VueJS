@@ -3,10 +3,7 @@
     <div class="container">
       <div class="first">
         <h1 class="title">Past Games</h1>
-        <b-table class="table" striped hover :items="this.$store.state.pastGames" :fields="this.fields">
-          <template #cell(favoriteGame)="row">
-            <input class="checboxFav" type="checkbox" @change="markFavorite(row.item.matchId)">
-          </template>
+        <b-table class="table" striped hover :items="this.$store.state.pastGames">
         </b-table>
         
       </div>
@@ -20,7 +17,7 @@
         <h1 class="title">Upcoming Games</h1>
         <b-table class="table" striped hover :items="this.$store.state.futureGames" :fields="this.fields" >
           <template #cell(favoriteGame)="row">
-            <input  class="checboxFav" type="checkbox" @change="markFavorite(row.item.matchId)">
+            <input  class="checboxFav" type="checkbox" @change="markFavorite($event, row.item.matchId)">
           </template>
         </b-table>
       </div>
@@ -40,9 +37,21 @@ export default {
     }  
     },
   methods: {
-    async markFavorite(matchId){
-      /////////////////////////TODO: post match as favorite to server//////////////////////////////////////////////////////
-      console.log(matchId)
+    async markFavorite(event, matchId){
+      if (event.target.checked == true){
+        let response = await this.axios.post(
+          `${this.$store.state.server_domain}users/favoriteMatches`,
+          {
+            matchId: matchId
+          }
+        );
+      }
+      else{
+        let response = await this.axios.delete(
+          `${this.$store.state.server_domain}users/favoriteMatches/${matchId}`,
+        );
+        this.$store.actions.deleteFavoriteGame(matchId)
+      }
     },
     async getGames(){
       try {
@@ -59,10 +68,13 @@ export default {
           `${this.$store.state.server_domain}users/favoriteMatches`,
         );
 
-        const rawFavoriteGames = res.data;   
+        if(res.data != "NO"){
+          const rawFavoriteGames = res.data;   
           rawFavoriteGames.forEach(element => {
-          this.$store.actions.pushGame(...[element[0].matchId])
+          this.$store.actions.pushFavoriteGame(...[element[0].matchId])
         }); 
+        }
+        
         
         this.$store.actions.setGames(games)
       } catch (error) {
@@ -76,14 +88,12 @@ export default {
 
     async changeFavoriteColumn(){
       let self = this;
-      let index = 0;
       let tables = $(".table");
-      let tablesArray = [tables[0], tables[2]]
+      let tablesArray = [tables[2]]
 
       tablesArray.forEach((table) => {
         for (var i = 0, row; row = table.rows[i]; i++) {
           for (var j = 0, col; col = row.cells[j]; j++) {
-            console.log("tablesArray")
             if (i != 0) {
               if (j == 0){
                 if (self.$store.state.favoriteGames.includes(parseInt(col.textContent))){

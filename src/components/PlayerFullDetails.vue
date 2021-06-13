@@ -61,7 +61,6 @@ export default {
     async moveToTeamPage(event){
       let team = event.target.innerText.split(": ")[1]
       this.$store.state.currentTeam = team;
-      console.log(team)
       this.$router.push({name: 'teamPage', params: {teamName: team}})
     }
   }

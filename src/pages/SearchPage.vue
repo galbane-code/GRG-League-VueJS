@@ -1,23 +1,265 @@
 <template>
   <div>
     <h1 class="title">Search Page</h1>
-    <b-input-group prepend="Search Query:" id="search-input">
-      <b-form-input v-model="searchQuery"></b-form-input>
-      <b-input-group-append>
-        <b-button variant="success">Search</b-button>
-      </b-input-group-append>
-    </b-input-group>
-      <br/>
-      Your search Query: {{ searchQuery }}
+  <div>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+<div class="row">
+  <!-- BEGIN SEARCH RESULT -->
+  <div class="col-md-12">
+    <div class="grid search">
+      <div class="grid-body">
+        <div class="row">
+          <!-- BEGIN FILTERS -->
+          <div class="col-md-3">
+            <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
+            <hr>
+            <div class="padding"></div>
+            
+            <!-- BEGIN FILTER BY PRICE -->
+            <h4>By Player Position:</h4>
+            Between <div id="price1">1</div> to <div id="price2">8</div>
+            <div id="playerFilter" class="slider-primary">
+              <div class="slider slider-horizontal" style="width: 152px;"><div class="slider-track"><div class="slider-selection" style="left: 30%; width: 50%;"></div><div class="slider-handle round" style="left: 30%;"></div><div class="slider-handle round" style="left: 80%;"></div></div><div class="tooltip top hide" style="top: -30px; left: 50.1px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">300 : 800</div></div><input id="playerInput" disabled=true type="text" class="slider" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="[300,800]" data-slider-tooltip="hide"></div>
+            </div>
+            <!-- END FILTER BY PRICE -->
+
+            <div class="padding"></div>
+            <br/>
+            <!-- BEGIN FILTER BY TEAM NAME -->
+            <h4>By Team Name:</h4>
+            <div id="teamFilter" class="slider-primary">
+              Team name from the search results
+              <div class="slider slider-horizontal" style="width: 152px;"><div class="slider-track"><div class="slider-selection" style="left: 30%; width: 50%;"></div><div class="slider-handle round" style="left: 30%;"></div><div class="slider-handle round" style="left: 80%;"></div></div><div class="tooltip top hide" style="top: -30px; left: 50.1px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">300 : 800</div></div><input id="teamInput" disabled=true type="text" class="slider" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="1" data-slider-value="[300,800]" data-slider-tooltip="hide"></div>
+            </div>
+            <!-- END FILTER BY TEAM NAME -->
+          </div>
+          <!-- END FILTERS -->
+
+          <!-- BEGIN RESULT -->
+          <div class="col-md-9">
+            <h2><i class="fa fa-file-o"></i> Result</h2>
+            <hr>
+            <!-- BEGIN SEARCH INPUT -->
+            <div class="input-group">
+            <b-input-group prepend="Search Query:" id="search-input">
+              <b-form-input v-model="searchQuery"></b-form-input>
+              <b-input-group-append>
+                <b-button variant="success" @click="searchTeams">Search Teams</b-button>
+                <b-button variant="info" @click="searchPlayers">Search Players</b-button>
+              </b-input-group-append>
+            </b-input-group>
+            <div>
+                <b>Your search Query: {{ searchQuery }}</b>
+            </div>
+          </div>
+            <!-- END SEARCH INPUT -->
+            
+            <div class="padding"></div>
+            
+            <div class="row">
+              <div class="col-md-6 text-right">
+                <div class="btn-group">
+                </div>
+              </div>
+            </div>
+            
+            <!-- BEGIN TABLE RESULT -->
+            <div class="container">
+              <div class="playersDiv" v-if="this.players.length > 0">
+                <h1 class="title">Players</h1>
+                <b-table id="playerTable" class="table" striped hover :items="this.players" :fields="this.playerFields">
+                </b-table>
+              </div>
+              <div v-else>{{error}}</div>
+              <br/>
+
+              <div class="teamsDiv" v-if="this.teams.length > 0">
+                <h1 class="title">Teams</h1>
+                <b-table id="teamTable" class="table" striped hover :items="this.teams" :fields="this.teamFields"></b-table>
+              </div>
+              <div v-else>{{error}}</div>
+              <br/>
+            </div>
+            <!-- END TABLE RESULT -->
+            
+            <!-- BEGIN PAGINATION -->
+            <!-- <ul class="pagination">
+              <li class="disabled"><a href="#">«</a></li>
+              <li class="active"><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li><a href="#">»</a></li>
+            </ul> -->
+            <!-- END PAGINATION -->
+          </div>
+          <!-- END RESULT -->
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <!-- END SEARCH RESULT -->
+</div>
   </div>
 </template>
 
 <script>
+import JQuery from 'jquery'
+window.$ = JQuery
 export default {
  data() {
     return {
-      searchQuery:""
+      teamFields: [{key: 'teamName', sortable: true},
+                  {key: 'teamLogo', sortable: false},
+                  ],
+      playerFields: [
+              {key: 'player_id', sortable: false},
+              {key: 'name', sortable: true},
+              {key: 'image', sortable: false},
+              {key: 'position', sortable: false},
+              {key: 'team_name', sortable: true}              
+              ],
+      searchQuery:"",
+      teams: [""],
+      players: [""],
+      error: "No matches to your search query"
     };
+  },
+  methods: {
+    async searchTeams(){
+      try{
+        // this.$store.state.teams = [];
+        this.players= [""];
+        this.teams= [""];
+        $(".teamsDiv").show();
+        $(".playersDiv").hide();
+        $("#playerInput").attr('disabled', true);
+        $("#teamInput").attr('disabled', false);
+
+        const response = await this.axios.get(
+          `${this.$store.state.server_domain}teams/searchTeamByName/${this.searchQuery}`,
+        );
+
+        let teams = response.data
+        let self = this;
+        teams.forEach(elem => {
+          let team = {};
+          team.teamName = elem.team_name;
+          team.teamLogo = elem.logo;
+          this.$store.actions.pushTeamFromSearch(team.teamName)
+                      
+          self.teams.push(team);
+        });
+
+        let newTeams = this.teams.filter(team => 
+          ((typeof team === 'object') && (team !== null))
+        )
+        this.teams = newTeams;
+        console.log(newTeams[0])
+
+        this.addTeamEventListener();
+
+      }catch(err){
+        this.teams = []
+        console.log(err)
+      }
+    },
+    async searchPlayers(){
+      try{
+        this.teams= [""];
+        this.players= [""];
+        $(".playersDiv").show();
+        $(".teamsDiv").hide();
+        $("#playerInput").attr('disabled', false);
+        $("#teamInput").attr('disabled', true);
+
+        const response = await this.axios.get(
+          `${this.$store.state.server_domain}players/searchPlayerByName/${this.searchQuery}`,
+        );
+
+        let players = response.data
+        let self = this;
+        players.forEach(elem => {
+          if (elem != null && ('player_id' in elem) && ('team_name' in elem)
+          && ('name' in elem) && ('image' in elem)
+          && ('position' in elem)){
+            self.$store.actions.pushPlayer(elem.name, elem.player_id)
+            self.players.push(elem)
+          }
+                      
+        });
+        let newPlayers = this.players.filter(player => 
+          ((typeof player === 'object') && (player != null))
+        )
+        this.players = newPlayers;
+        console.log(newPlayers[0])
+
+        this.playerEventListener();
+        this.addTeamEventListener();
+
+
+      }catch(err){
+        this.players = []
+        console.log(err)
+      }
+    },
+    async addTeamEventListener(){
+      this.$store.actions.teamEventListener()
+    },
+    async playerEventListener(){
+      this.$store.actions.playerEventListener();
+    },
+    sortPlayers(){
+      // if(this.players.length > 1){
+      //   let newPlayers = this.players.filter(player => 
+      //     ((typeof player === 'object') && (player != null))
+      //   )
+      // newPlayers.sort(this.playerCompare)
+      // this.players = this.sortComputedPlayers(newPlayers)
+      // }
+    },
+    sortTeams(){
+      // if(this.teams.length > 1){
+      //   let newTeams = this.teams.filter(team => 
+      //     ((typeof team === 'object') && (team !== null))
+      //   )
+      // newTeams.sort(this.teamCompare)
+      // this.teams = newTeams
+      // }
+    }
+  },
+  mounted(){
+    $(".playersDiv").hide();
+    $(".teamsDiv").hide();
+    $("#playerInput").attr('disabled', true);
+    $("#teamInput").attr('disabled', true);
+  },
+  beforeUpdate() {
+    $(document).ready(function(){
+      $("#playerInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#playerTable tbody tr").filter(function() {
+          console.log(this.cells[3].textContent)
+          console.log(value)
+          $(this).toggle($(this.cells[3]).text().indexOf(value) > -1)
+        });
+      });
+    });
+
+    $(document).ready(function(){
+      $("#teamInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#teamTable tbody tr").filter(function() {
+          console.log(this.cells[0].textContent)
+          console.log(value)
+          $(this).toggle($(this.cells[0]).text().toLowerCase().indexOf(value.toLowerCase()) > -1)
+        });
+      });
+    });
   },
 }
 </script>
@@ -26,6 +268,64 @@ export default {
 
 #search-input {
   margin-left: 20px; 
-  width: 500px; 
+  width: 1000px; 
+}
+
+body{margin-top:20px;
+background:#eee;
+}
+
+.btn {
+    margin-bottom: 5px;
+}
+
+.grid {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    color: #666666;
+    border-radius: 2px;
+    margin-bottom: 25px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.grid .grid-body {
+    padding: 15px 20px 15px 20px;
+    font-size: 0.9em;
+    line-height: 1.9em;
+}
+
+.search table tr td.rate {
+    color: #f39c12;
+    line-height: 50px;
+}
+
+.search table tr:hover {
+    cursor: pointer;
+}
+
+.search table tr td.image {
+	width: 50px;
+}
+
+.search table tr td img {
+	width: 50px;
+	height: 50px;
+}
+
+.search table tr td.rate {
+	color: #f39c12;
+	line-height: 50px;
+}
+
+.search table tr td.price {
+	font-size: 1.5em;
+	line-height: 50px;
+}
+
+.search #price1,
+.search #price2 {
+	display: inline;
+	font-weight: 600;
 }
 </style>

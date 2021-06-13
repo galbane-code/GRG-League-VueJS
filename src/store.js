@@ -64,8 +64,14 @@ const actions = {
         state.players[playerName] = playerId;
       }
     },
-    pushGame: (matchId) => {
+    pushFavoriteGame: (matchId) => {
       state.favoriteGames.push(matchId);
+    },
+    deleteFavoriteGame: (matchId) => {
+      let index = state.favoriteGames.indexOf(matchId);
+      if (index !== -1){
+        state.favoriteGames.splice(index, 1)
+      }
     },
     playerEventListener: () => {
       $(`.table`).on("click", "td", function (row, $el, field) {
@@ -75,11 +81,22 @@ const actions = {
           state.currentPlayer = playerName
           main.router.push({name: 'playerPage', params: {playerName: playerName}});
         }
+        // if (state.teams.includes(playerName)){
+        //   alert(playerName);
+        //   state.currentTeam = playerName
+        //   main.router.push({name: 'teamPage', params: {teamName: playerName}});
+        // }
       });
     },
     setTable: (oldTable, newTable) => {
       oldTable = newTable;
-    }
+    },
+    pushTeamFromSearch: (teamName) => {
+      let index = state.teams.indexOf(teamName);
+      if (index == -1){
+        state.teams.push(teamName)
+      }
+    },
 }
 
 export {state, actions}
