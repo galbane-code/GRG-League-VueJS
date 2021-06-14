@@ -3,6 +3,7 @@ import $ from 'jquery'
 const main =  require("./main")
 
 const state = {
+    userId: -1,
     server_domain: "http://localhost:3000/",
     futureGames: [],
     pastGames: [],
@@ -12,6 +13,9 @@ const state = {
     players: {},
     currentPlayer: "",
     favoriteGames: [],
+    searchPlayers: [],
+    searchTeams: [],
+    searchQuery: ""
 }
 
 const actions = {
@@ -26,7 +30,8 @@ const actions = {
           state.teams.push(game.guestTeam)
           game.matchDate = game.matchDate.split("T")[0];
 
-          if(game.score == null){
+          if(game.score == null || game.score == 'null'){
+            game.score = null;
               state.futureGames.push(game);
           }
           else{

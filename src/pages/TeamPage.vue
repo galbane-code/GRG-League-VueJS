@@ -49,6 +49,7 @@ export default {
 
 
         } catch (error) {
+            this.$root.toast("Team Page", "Team does not belong to Superliga", "danger");
             console.log("error in getTeamDetails")
             console.log(error);
         }
