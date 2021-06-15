@@ -13,7 +13,7 @@ export default {
     },
     data() {
         return {
-            teamId: -1,
+            teamId: null,
             teamName: "",
             players:[]
         };
@@ -29,7 +29,6 @@ export default {
             const response = await this.axios.get(
             `${this.$store.state.server_domain}teams/searchTeamByName/${this.$store.state.currentTeam}`,
             );
-            console.log(response.data)
             let team = response.data[0]
             this.teamId = team.team_id
             this.teamName = this.$store.state.currentTeam
@@ -42,6 +41,13 @@ export default {
             this.players = res.data.players
 
             this.$store.actions.setGames(games)
+
+            let self = this;
+            this.players.forEach(player => {
+                self.$store.actions.pushPlayer(player.name, player.player_id);
+            });
+
+
 
         } catch (error) {
             console.log("error in getTeamDetails")
@@ -59,11 +65,15 @@ export default {
         this.getTeamDetails();
         this.teamEventListener();
        // this.playerEventListenerImage();
+        this.playerEventListener();
+
     },
     beforeRouteUpdate(){
         this.getTeamDetails();
         this.teamEventListener();
        // this.playerEventListenerImage();
+        this.playerEventListener();
+
     }, 
 }
 </script>

@@ -48,6 +48,12 @@ const routes = [
     component: () => import("./pages/ProfilePage")
   },
   {
+    path: "/playerPage/:playerName",
+    name: "playerPage",
+    component: () => import("./pages/PlayerPage")
+
+  },
+  {
     path: "*",
     name: "notFound",
     component: NotFound

@@ -1,5 +1,7 @@
 import axios from "axios";
+import $ from 'jquery'
 const main =  require("./main")
+
 const state = {
     server_domain: "http://localhost:3000/",
     futureGames: [],
@@ -7,6 +9,9 @@ const state = {
     eventLogs: [],
     teams: [],
     currentTeam: "",
+    players: {},
+    currentPlayer: "",
+    favoriteGames: [],
 }
 
 const actions = {
@@ -50,6 +55,44 @@ const actions = {
       });
     },
 
+    pushPlayer: (playerName, playerId) => {
+      if (!(playerName in state.players)){
+        state.players[playerName] = playerId;
+      }
+    },
+    pushFavoriteGame: (matchId) => {
+      state.favoriteGames.push(matchId);
+    },
+    deleteFavoriteGame: (matchId) => {
+      let index = state.favoriteGames.indexOf(matchId);
+      if (index !== -1){
+        state.favoriteGames.splice(index, 1)
+      }
+    },
+    playerEventListener: () => {
+      $(`.table`).on("click", "td", function (row, $el, field) {
+        let playerName = $(this)[0].textContent;
+        if (playerName in state.players){
+          alert(playerName);
+          state.currentPlayer = playerName
+          main.router.push({name: 'playerPage', params: {playerName: playerName}});
+        }
+        // if (state.teams.includes(playerName)){
+        //   alert(playerName);
+        //   state.currentTeam = playerName
+        //   main.router.push({name: 'teamPage', params: {teamName: playerName}});
+        // }
+      });
+    },
+    setTable: (oldTable, newTable) => {
+      oldTable = newTable;
+    },
+    pushTeamFromSearch: (teamName) => {
+      let index = state.teams.indexOf(teamName);
+      if (index == -1){
+        state.teams.push(teamName)
+      }
+    },
 }
 
 export {state, actions}

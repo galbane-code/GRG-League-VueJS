@@ -40,15 +40,17 @@ export default {
       
       try {
         const response = await this.axios.get(
-          `${this.$store.state.server_domain}user/favoriteMatches`,
+          `${this.$store.state.server_domain}users/favoriteMatches`,
         );
-        // console.log(response);
-        const games = response.data;
-        this.games = []
-        games.forEach(element => {
-          this.games.push(...[element[0]])
-        });
-        ;
+
+        if(response.data != "NO"){
+          const games = response.data;
+          this.games = []
+          games.forEach(element => {
+            this.games.push(...[element[0]]);
+          });
+        }
+
       } catch (error) {
         console.log("error in update games")
         console.log(error);
@@ -57,7 +59,6 @@ export default {
   }, 
   mounted(){
     this.updateGames(); 
-    console.log("favorite games mounted");
   }
 };
 </script>
