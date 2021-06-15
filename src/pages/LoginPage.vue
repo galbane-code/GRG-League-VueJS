@@ -105,9 +105,11 @@ export default {
         // this.$root.loggedIn = true;
         console.log(this.$root.store.login);
         this.$root.store.login(this.form.username);
-        localStorage.setItem("searchTeams", []);
-        localStorage.setItem("searchPlayers", []);
+        localStorage.setItem("searchTeams", JSON.stringify([]));
+        localStorage.setItem("searchPlayers", JSON.stringify([]));
         localStorage.setItem("searchQuery", "");
+        localStorage.setItem("allPlayers", JSON.stringify({}));
+        localStorage.setItem("allTeams", JSON.stringify([]));
 
         const res = await this.axios.get(
           `${this.$store.state.server_domain}allUsers`,

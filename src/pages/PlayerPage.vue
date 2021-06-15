@@ -28,6 +28,14 @@ export default {
     methods: {
         async getPlayer(){
             let playerId = this.$store.state.players[this.$store.state.currentPlayer]
+            console.log(playerId)
+            if((localStorage.getItem("playerId") === null || playerId != undefined)){
+                localStorage.setItem("playerId", playerId);
+            }
+
+            else{
+                playerId = localStorage.getItem("playerId")
+            }
             const response = await this.axios.get(
             `${this.$store.state.server_domain}players/playerFullDetails/${playerId}`,
             );

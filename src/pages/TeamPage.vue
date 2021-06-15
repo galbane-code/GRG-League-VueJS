@@ -27,7 +27,7 @@ export default {
             this.$store.state.eventLogs = [];
 
             const response = await this.axios.get(
-            `${this.$store.state.server_domain}teams/searchTeamByName/${this.$store.state.currentTeam}`,
+            `${this.$store.state.server_domain}teams/searchTeamByName/${this.$route.params.teamName}`,
             );
             let team = response.data[0]
             this.teamId = team.team_id

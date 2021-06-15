@@ -120,6 +120,7 @@ export default {
   methods: {
     async searchTeams(){
       try{
+        this.teams = [""];
         this.players= [""];
         $(".teamsDiv").show();
         $(".playersDiv").hide();
@@ -138,7 +139,16 @@ export default {
           let team = {};
           team.teamName = elem.team_name;
           team.teamLogo = elem.logo;
-          this.$store.actions.pushTeamFromSearch(team.teamName)
+          // this.$store.actions.pushTeamFromSearch(team.teamName)
+          let allTeams = JSON.parse(localStorage.getItem("allTeams"));
+          let index = allTeams.indexOf(elem.team_name);
+          if (index !== -1){
+            allTeams.push(elem.team_name)
+            localStorage.setItem("allTeams", JSON.stringify(allTeams))
+            console.log(allTeams)
+            console.log(JSON.parse(localStorage.getItem("allTeams")))
+          }
+          //TODO: add team.teamName to the localStorage
                       
           self.teams.push(team);
         });
@@ -159,7 +169,8 @@ export default {
     },
     async searchPlayers(){
       try{
-        this.teams= [""];
+        this.teams = [""];
+        this.players = [""]
         $(".playersDiv").show();
         $(".teamsDiv").hide();
         $("#playerInput").attr('disabled', false);
@@ -177,8 +188,19 @@ export default {
           if (elem != null && ('player_id' in elem) && ('team_name' in elem)
           && ('name' in elem) && ('image' in elem)
           && ('position' in elem)){
-            self.$store.actions.pushPlayer(elem.name, elem.player_id)
-            this.$store.actions.pushTeamFromSearch(elem.team_name)
+            // self.$store.actions.pushPlayer(elem.name, elem.player_id)
+            // this.$store.actions.pushTeamFromSearch(elem.team_name)
+
+            //TODO: add elem.teamName to the localStorage
+            let allPlayers = JSON.parse(localStorage.getItem("allPlayers"));
+            let allTeams = JSON.parse(localStorage.getItem("allTeams"));
+            
+            allPlayers[elem.name] = elem.player_id
+            allTeams.push(elem.team_name)
+            localStorage.setItem("allPlayers", JSON.stringify(allPlayers))
+            localStorage.setItem("allTeams", JSON.stringify(allTeams))
+            //TODO: add (elem.name, elem.player_id) to the localStorage
+
             self.players.push(elem)
           }
                       
@@ -200,13 +222,13 @@ export default {
       }
     },
     async addTeamEventListener(){
-      this.$store.actions.teamEventListener()
+      this.$store.actions.teamEventListener(true)
     },
     async playerEventListener(){
-      this.$store.actions.playerEventListener();
+      this.$store.actions.playerEventListener(true);
     },
     async checkLastSearch(){
-      if (JSON.parse(localStorage.getItem("searchPlayers")).length != 0){
+      if ((JSON.parse(localStorage.getItem("searchPlayers"))).length != 0){
         this.players = JSON.parse(localStorage.getItem("searchPlayers"));
         $(".playersDiv").show();
         $(".teamsDiv").hide();
@@ -217,7 +239,7 @@ export default {
         this.addTeamEventListener();
       }
 
-      if (JSON.parse(localStorage.getItem("searchTeams")).length != 0){
+      if ((JSON.parse(localStorage.getItem("searchTeams"))).length != 0){
         this.teams = JSON.parse(localStorage.getItem("searchTeams"));
         $(".teamsDiv").show();
         $(".playersDiv").hide();
