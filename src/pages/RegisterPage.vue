@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title">Register</h1>
+    <h1 class="test2" style="margin-bottom:3%;margin-top:8%">Register</h1>
     <b-form @submit.prevent="onRegister" @reset.prevent="onReset">
       <b-form-group
         id="input-group-username"
@@ -107,6 +107,7 @@
         label-cols-sm="3"
         label="Confirm Password:"
         label-for="confirmedPassword"
+        style=""
       >
         <b-form-input
           id="confirmedPassword"
@@ -157,10 +158,10 @@
         ></b-form-input>
         </b-form-group>
 
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button type="reset" variant="info">Reset</b-button>
       <b-button
         type="submit"
-        variant="primary"
+        variant="dark"
         style="width:250px;"
         class="ml-5 w-75"
         >Register</b-button
@@ -304,6 +305,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+
 .container {
   max-width: 500px;
 }

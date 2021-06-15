@@ -59,6 +59,7 @@ const actions = {
         }
       });
     },
+
     pushPlayer: (playerName, playerId) => {
       if (!(playerName in state.players)){
         state.players[playerName] = playerId;

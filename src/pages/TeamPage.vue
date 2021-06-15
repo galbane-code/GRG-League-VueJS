@@ -39,6 +39,7 @@ export default {
             
             let games = res.data.teamMatches
             this.players = res.data.players
+
             this.$store.actions.setGames(games)
 
             let self = this;
@@ -64,12 +65,16 @@ export default {
     mounted() {
         this.getTeamDetails();
         this.teamEventListener();
+       // this.playerEventListenerImage();
         this.playerEventListener();
+
     },
     beforeRouteUpdate(){
         this.getTeamDetails();
         this.teamEventListener();
+       // this.playerEventListenerImage();
         this.playerEventListener();
+
     }, 
 }
 </script>

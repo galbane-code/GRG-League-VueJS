@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="title">Search Page</h1>
   <div>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
+      <h1 class="test3">Search Page</h1>
 <div class="row">
   <!-- BEGIN SEARCH RESULT -->
   <div class="col-md-12">
@@ -38,18 +38,18 @@
 
           <!-- BEGIN RESULT -->
           <div class="col-md-9">
-            <h2><i class="fa fa-file-o"></i> Result</h2>
+            <h1 class="test2"><i class="fa fa-file-o" style="margin-right:8px"></i> Result</h1>
             <hr>
             <!-- BEGIN SEARCH INPUT -->
             <div class="input-group">
-            <b-input-group prepend="Search Query:" id="search-input">
-              <b-form-input v-model="searchQuery"></b-form-input>
+            <b-input-group style="margin-right:4px" id="search-input">
+              <b-form-input size="md" placeholder="Enter Your Search Query" style="margin-right:4px"  v-model="searchQuery"></b-form-input>
               <b-input-group-append>
-                <b-button variant="success" @click="searchTeams">Search Teams</b-button>
-                <b-button variant="info" @click="searchPlayers">Search Players</b-button>
+                <b-button style="margin-right:6px" variant="dark" @click="searchTeams">Search Teams</b-button>
+                <b-button style="margin-right:2px"  variant="dark" @click="searchPlayers">Search Players</b-button>
               </b-input-group-append>
             </b-input-group>
-            <div>
+            <div style="margin-left:3%">
                 <b>Your search Query: {{ searchQuery }}</b>
             </div>
           </div>
