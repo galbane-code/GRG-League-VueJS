@@ -14,6 +14,7 @@
           <b-nav-item :to="{ name: 'register' }">Register</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
+          <b-nav-item :to="{ name: 'gamePage' }" v-if="this.$store.state.userId != -1">Add New Game</b-nav-item>
         <b-nav-item-dropdown right>
           <template #button-content>
             {{$root.store.username}}
@@ -35,6 +36,7 @@ export default {
   methods: {
     Logout() {
       this.$root.store.logout();
+      this.$store.state.userId = -1;
       this.$root.toast("Logout", "User logged out successfully", "success");
 
       this.$router.push("/").catch(() => {

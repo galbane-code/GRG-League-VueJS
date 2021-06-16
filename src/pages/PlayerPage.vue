@@ -27,11 +27,21 @@ export default {
 
     methods: {
         async getPlayer(){
-            let playerId = this.$store.state.players[this.$store.state.currentPlayer]
-            console.log(playerId);
+
+            let playerId = this.$store.state.players[this.$store.state.currentPlayer];
+
+            if((localStorage.getItem("playerId") === null || playerId != undefined)){
+                localStorage.setItem("playerId", playerId);
+            }
+
+            else{
+                playerId = localStorage.getItem("playerId")
+            }
+
             const response = await this.axios.get(
             `${this.$store.state.server_domain}players/playerFullDetails/${playerId}`,
             );
+            
             this.player = response.data[0];
 
             for (const [key, value] of Object.entries(this.player)) {

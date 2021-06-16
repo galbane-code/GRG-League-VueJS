@@ -27,7 +27,7 @@ export default {
             this.$store.state.eventLogs = [];
 
             const response = await this.axios.get(
-            `${this.$store.state.server_domain}teams/searchTeamByName/${this.$store.state.currentTeam}`,
+            `${this.$store.state.server_domain}teams/searchTeamByName/${this.$route.params.teamName}`,
             );
             let team = response.data[0]
             this.teamId = team.team_id
@@ -50,6 +50,7 @@ export default {
 
 
         } catch (error) {
+            this.$root.toast("Team Page", "Team does not belong to Superliga", "danger");
             console.log("error in getTeamDetails")
             console.log(error);
         }

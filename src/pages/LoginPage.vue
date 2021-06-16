@@ -95,7 +95,7 @@ export default {
     async Login() {
       try {
         const response = await this.axios.post(
-          "http://localhost:3000/Login",
+          `${this.$store.state.server_domain}Login`,
           {
             username: this.form.username,
             password: this.form.password
@@ -105,7 +105,23 @@ export default {
         // this.$root.loggedIn = true;
         console.log(this.$root.store.login);
         this.$root.store.login(this.form.username);
+        localStorage.setItem("searchTeams", JSON.stringify([]));
+        localStorage.setItem("searchPlayers", JSON.stringify([]));
+        localStorage.setItem("searchQuery", "");
+        localStorage.setItem("allPlayers", JSON.stringify({}));
+        localStorage.setItem("allTeams", JSON.stringify([]));
+
+        const res = await this.axios.get(
+          `${this.$store.state.server_domain}allUsers`,
+        );
+        console.log(this.$store.state.userId)
+        if (res.data.length > 0){
+          this.$store.state.userId = res.data[0]
+        }
+        console.log(res.data)
+
         this.$router.push("/");
+        this.$root.toast("Login", `Welcome ${this.form.username}`, "success");
       } catch (err) {
         // console.log(err.response);
         this.form.submitError = err.response.data;

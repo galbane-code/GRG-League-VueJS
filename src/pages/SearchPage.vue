@@ -82,18 +82,6 @@
               <br/>
             </div>
             <!-- END TABLE RESULT -->
-            
-            <!-- BEGIN PAGINATION -->
-            <!-- <ul class="pagination">
-              <li class="disabled"><a href="#">«</a></li>
-              <li class="active"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li><a href="#">»</a></li>
-            </ul> -->
-            <!-- END PAGINATION -->
           </div>
           <!-- END RESULT -->
         </div>
@@ -132,13 +120,14 @@ export default {
   methods: {
     async searchTeams(){
       try{
-        // this.$store.state.teams = [];
+        this.teams = [""];
         this.players= [""];
-        this.teams= [""];
         $(".teamsDiv").show();
         $(".playersDiv").hide();
         $("#playerInput").attr('disabled', true);
         $("#teamInput").attr('disabled', false);
+        localStorage.setItem("searchQuery", this.searchQuery)
+        localStorage.setItem("searchPlayers", JSON.stringify([]))
 
         const response = await this.axios.get(
           `${this.$store.state.server_domain}teams/searchTeamByName/${this.searchQuery}`,
@@ -150,7 +139,16 @@ export default {
           let team = {};
           team.teamName = elem.team_name;
           team.teamLogo = elem.logo;
-          this.$store.actions.pushTeamFromSearch(team.teamName)
+          // this.$store.actions.pushTeamFromSearch(team.teamName)
+          let allTeams = JSON.parse(localStorage.getItem("allTeams"));
+          let index = allTeams.indexOf(elem.team_name);
+          if (index !== -1){
+            allTeams.push(elem.team_name)
+            localStorage.setItem("allTeams", JSON.stringify(allTeams))
+            console.log(allTeams)
+            console.log(JSON.parse(localStorage.getItem("allTeams")))
+          }
+          //TODO: add team.teamName to the localStorage
                       
           self.teams.push(team);
         });
@@ -159,6 +157,7 @@ export default {
           ((typeof team === 'object') && (team !== null))
         )
         this.teams = newTeams;
+        localStorage.setItem("searchTeams", JSON.stringify(this.teams))
         console.log(newTeams[0])
 
         this.addTeamEventListener();
@@ -170,12 +169,14 @@ export default {
     },
     async searchPlayers(){
       try{
-        this.teams= [""];
-        this.players= [""];
+        this.teams = [""];
+        this.players = [""]
         $(".playersDiv").show();
         $(".teamsDiv").hide();
         $("#playerInput").attr('disabled', false);
         $("#teamInput").attr('disabled', true);
+        localStorage.setItem("searchQuery", this.searchQuery);
+        localStorage.setItem("searchTeams", JSON.stringify([]))
 
         const response = await this.axios.get(
           `${this.$store.state.server_domain}players/searchPlayerByName/${this.searchQuery}`,
@@ -187,7 +188,19 @@ export default {
           if (elem != null && ('player_id' in elem) && ('team_name' in elem)
           && ('name' in elem) && ('image' in elem)
           && ('position' in elem)){
-            self.$store.actions.pushPlayer(elem.name, elem.player_id)
+            // self.$store.actions.pushPlayer(elem.name, elem.player_id)
+            // this.$store.actions.pushTeamFromSearch(elem.team_name)
+
+            //TODO: add elem.teamName to the localStorage
+            let allPlayers = JSON.parse(localStorage.getItem("allPlayers"));
+            let allTeams = JSON.parse(localStorage.getItem("allTeams"));
+            
+            allPlayers[elem.name] = elem.player_id
+            allTeams.push(elem.team_name)
+            localStorage.setItem("allPlayers", JSON.stringify(allPlayers))
+            localStorage.setItem("allTeams", JSON.stringify(allTeams))
+            //TODO: add (elem.name, elem.player_id) to the localStorage
+
             self.players.push(elem)
           }
                       
@@ -196,6 +209,7 @@ export default {
           ((typeof player === 'object') && (player != null))
         )
         this.players = newPlayers;
+        localStorage.setItem("searchPlayers", JSON.stringify(this.players))
         console.log(newPlayers[0])
 
         this.playerEventListener();
@@ -208,35 +222,40 @@ export default {
       }
     },
     async addTeamEventListener(){
-      this.$store.actions.teamEventListener()
+      this.$store.actions.teamEventListener(true)
     },
     async playerEventListener(){
-      this.$store.actions.playerEventListener();
+      this.$store.actions.playerEventListener(true);
     },
-    sortPlayers(){
-      // if(this.players.length > 1){
-      //   let newPlayers = this.players.filter(player => 
-      //     ((typeof player === 'object') && (player != null))
-      //   )
-      // newPlayers.sort(this.playerCompare)
-      // this.players = this.sortComputedPlayers(newPlayers)
-      // }
+    async checkLastSearch(){
+      if ((JSON.parse(localStorage.getItem("searchPlayers"))).length != 0){
+        this.players = JSON.parse(localStorage.getItem("searchPlayers"));
+        $(".playersDiv").show();
+        $(".teamsDiv").hide();
+        $("#playerInput").attr('disabled', false);
+        $("#teamInput").attr('disabled', true);
+        this.searchQuery = localStorage.getItem("searchQuery");
+        this.playerEventListener();
+        this.addTeamEventListener();
+      }
+
+      if ((JSON.parse(localStorage.getItem("searchTeams"))).length != 0){
+        this.teams = JSON.parse(localStorage.getItem("searchTeams"));
+        $(".teamsDiv").show();
+        $(".playersDiv").hide();
+        $("#playerInput").attr('disabled', true);
+        $("#teamInput").attr('disabled', false);
+        this.searchQuery = localStorage.getItem("searchQuery");
+        this.addTeamEventListener();
+      }
     },
-    sortTeams(){
-      // if(this.teams.length > 1){
-      //   let newTeams = this.teams.filter(team => 
-      //     ((typeof team === 'object') && (team !== null))
-      //   )
-      // newTeams.sort(this.teamCompare)
-      // this.teams = newTeams
-      // }
-    }
   },
   mounted(){
     $(".playersDiv").hide();
     $(".teamsDiv").hide();
     $("#playerInput").attr('disabled', true);
     $("#teamInput").attr('disabled', true);
+    this.checkLastSearch()
   },
   beforeUpdate() {
     $(document).ready(function(){
