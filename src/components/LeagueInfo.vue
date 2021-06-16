@@ -1,13 +1,11 @@
 <template>
     <div class="league-preview">
       <b-card
-      img-alt="Image"
-      tag="article"
-      style="max-width: 20rem;"
+      style="width:100%; height:100%"
       class="mb-2"
     >
-      <b-card-title>{{leagueName}}</b-card-title>
-      <b-card-text>
+      <b-card-title style="margin-left:30%; margin-right:30%">{{leagueName}}</b-card-title>
+      <b-card-text  style="margin-left:30%; margin-right:25%">
         Season: {{ season }}
         <br/>
         Stage: {{ stage }}
@@ -67,16 +65,23 @@ export default {
 <style>
 .league-preview {
   display: inline-block;
-  width: 250px;
+  width: 80%;
   height: 200px;
   position: relative;
   margin: 10px 10px;
   border-style: solid;
-  border-radius: 10px;
-  border-width: 5px;
-  border-color:rgb(44, 89, 116);
+  border-radius: 20px;
+  border-width: 3px;
+  border-color:#424242;
+  padding-bottom:0px;
 }
 
+.card-body
+{
+  border-radius:20px;
+  color: #343a40 ;
+  background-color:#F7F7F7 !important;
+}
 .league-preview .league-title {
   text-align: center;
   text-transform: uppercase;

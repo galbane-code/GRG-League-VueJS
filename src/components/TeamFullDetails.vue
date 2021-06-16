@@ -33,8 +33,8 @@
         <!-- <b-table class="table" striped hover :items="players"></b-table> -->
         <div class ="row">
           <div class= "col-sm">
-              <b-card v-for="(player,index) in players.slice(0,players.length/2)" :key="index"  style="width:100%" class="mb-2">
-                <b-row no-gutters>
+              <b-card v-for="(player,index) in players.slice(0,players.length/2)" :key="index"   style="width:100%" class="mb-2">
+                <b-row no-gutters v-on:click="playerRoute(player.name,player.id)">
                   <b-col md="6">
                     <b-card-img :src="`${player.image}`"  alt="Image" class="rounded-circle"></b-card-img>
                   </b-col>
@@ -49,7 +49,7 @@
           </div>
           <div class= "col-sm">
               <b-card v-for="(player,index) in players.slice(players.length/2,players.length)" :key="index"  style="width:100%" class="mb-2">
-                <b-row no-gutters>
+                <b-row no-gutters v-on:click="playerRoute(player.name,player.player_id)">
                   <b-col md="6">
                     <b-card-img :src="`${player.image}`"  alt="Image" overlay class="rounded-circle"></b-card-img>
                   </b-col>
@@ -87,6 +87,11 @@ export default {
     },
     methods: 
     {
+      async playerRoute(playerNameParam,playerIdParam){
+        this.$store.actions.pushPlayer(playerNameParam, playerIdParam);
+        this.$store.state.currentPlayer = playerNameParam;
+        this.$router.push({name: 'playerPage', params: {playerName: playerNameParam}});
+    },
     }
 }
 </script>

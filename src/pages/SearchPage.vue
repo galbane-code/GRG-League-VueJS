@@ -272,7 +272,7 @@ export default {
 }
 
 body{margin-top:20px;
-background:#eee;
+background:#F7F7F7;
 }
 
 .btn {
@@ -282,7 +282,7 @@ background:#eee;
 .grid {
     position: relative;
     width: 100%;
-    background: #fff;
+    background: #F7F7F7;
     color: #666666;
     border-radius: 2px;
     margin-bottom: 25px;

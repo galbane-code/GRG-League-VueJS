@@ -1,8 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container" >
   <div v-if="games[0] != '' ">
-    <h2 >Your Favorite Future Games</h2>
+    <h1 class="test2" >Your Favorite Future Games</h1>
     <GamePreview
+      style="width:31.5%"
       v-for="g in games.slice(0,3)"
       :load="parseDate(g)"
       :matchId="g.matchId" 
@@ -14,7 +15,7 @@
       :key="g.matchId"></GamePreview>    
   </div>
   <div v-else>
-    <h2 >{{error}}</h2>
+    <h1 class="test2" >{{error}}</h1>
   </div>
   </div>
 </template>

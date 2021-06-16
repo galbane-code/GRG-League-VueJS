@@ -58,24 +58,34 @@ export default {
 <style>
 .game-preview {
   display: inline-block;
-  width: 250px;
+  width: 80%;
   height: 200px;
   position: relative;
   margin: 10px 10px;
   border-style: solid;
-  border-radius: 10px;
-  border-width: 5px;
-  border-color:cadetblue;
+  border-radius: 20px;
+  border-width: 3px;
+  border-color:#424242;
+  padding-bottom:0px;
 }
 
 .game-preview .game-title {
   text-align: center;
   text-transform: uppercase;
-  color:  rgb(111, 197, 157);
+  color:  rgb(111, 155, 197);
 }
 
 .game-preview .game-content {
   width: 100%;
   overflow: hidden;
+}
+
+.game-content li
+{
+  padding-bottom: 3%;
+}
+.game-title 
+{
+    padding-bottom: 3%;
 }
 </style>

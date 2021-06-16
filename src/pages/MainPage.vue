@@ -1,12 +1,17 @@
 <template>
   <div class="container">
-    <h1 class="title">Main Page</h1>
-    <div class="left">
+    <h1 class="test3">Main Page</h1> 
+    <br>
+    <div>
+      <h1 class="test2">Current Leauge</h1>
+      <div class="col-sm" style="padding-left:30%;padding-right:20%">
       <LeagueInfo></LeagueInfo>
     </div>
-    <div class="second">
+    <br>
+    <div class="row">
       <LoginPage v-if="!$root.store.username"></LoginPage>
-      <FavoriteGames  v-else></FavoriteGames>
+      <FavoriteGames v-else></FavoriteGames>
+    </div>
     </div>
   </div>
 </template>
@@ -40,11 +45,6 @@ export default {
 .container {
     overflow: hidden; /* add this to contain floated children */
 }
-.left {
-    float:left; /* add this */
-}
-.right {
-    float: right; /* add this */
-}
+
 
 </style>

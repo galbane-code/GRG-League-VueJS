@@ -28,6 +28,7 @@ export default {
     methods: {
         async getPlayer(){
             let playerId = this.$store.state.players[this.$store.state.currentPlayer]
+            console.log(playerId);
             const response = await this.axios.get(
             `${this.$store.state.server_domain}players/playerFullDetails/${playerId}`,
             );
