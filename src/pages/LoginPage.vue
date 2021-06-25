@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="test2" style="margin-bottom:5%;margin-top:15%">Login</h1>
+    <h1 class="test2" style="margin-bottom:5%;margin-top:4%">Login</h1>
     <b-form @submit.prevent="onLogin">
       <b-form-group
         id="input-group-Username"

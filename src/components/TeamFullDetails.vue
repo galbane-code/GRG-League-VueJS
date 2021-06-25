@@ -41,6 +41,7 @@
                   <b-col md="6">
                     <b-card-body :title="`${player.name}`">
                       <b-card-sub-title style="color:black">Team: <h4>{{player.team_name}}</h4></b-card-sub-title>
+                      <b-card-sub-title>ID: <h4>{{player.player_id}}</h4></b-card-sub-title>
                       <b-card-sub-title>Position: <h4>{{player.position}}</h4></b-card-sub-title>
                     </b-card-body>
                   </b-col>
@@ -56,6 +57,7 @@
                   <b-col md="6">
                     <b-card-body :title="`${player.name}`">
                       <b-card-sub-title>Team: <h4>{{player.team_name}}</h4></b-card-sub-title>
+                      <b-card-sub-title>ID: <h4>{{player.player_id}}</h4></b-card-sub-title>
                       <b-card-sub-title>Position: <h4>{{player.position}}</h4></b-card-sub-title>
                     </b-card-body>
                   </b-col>

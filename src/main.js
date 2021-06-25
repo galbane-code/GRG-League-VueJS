@@ -17,7 +17,6 @@ const store = { state: state, actions: actions }
 Vue.prototype.$store = store
 
 import Vuelidate from "vuelidate";
-
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {
@@ -94,7 +93,7 @@ const shared_data = {
 };
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
-
+.0
 new Vue({
   router,
   data() {

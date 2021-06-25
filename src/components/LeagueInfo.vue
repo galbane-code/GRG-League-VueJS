@@ -4,8 +4,8 @@
       style="width:100%; height:100%"
       class="mb-2"
     >
-      <b-card-title style="margin-left:30%; margin-right:30%">{{leagueName}}</b-card-title>
-      <b-card-text  style="margin-left:30%; margin-right:25%">
+      <b-card-title style="margin-left:15%; margin-right:35%">{{leagueName}}</b-card-title>
+      <b-card-text  style="margin-left:15%; margin-right:15%">
         Season: {{ season }}
         <br/>
         Stage: {{ stage }}

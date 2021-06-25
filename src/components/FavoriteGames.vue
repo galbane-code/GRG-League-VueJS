@@ -3,7 +3,7 @@
   <div v-if="games[0] != '' ">
     <h1 class="test2" >Your Favorite Future Games</h1>
     <GamePreview
-      style="width:31.5%"
+      style="width:30%"
       v-for="g in games.slice(0,3)"
       :load="parseDate(g)"
       :matchId="g.matchId" 
