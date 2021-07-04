@@ -101,9 +101,6 @@ export default {
             password: this.form.password
           }
         );
-        console.log(response);
-        // this.$root.loggedIn = true;
-        console.log(this.$root.store.login);
         this.$root.store.login(this.form.username);
         localStorage.setItem("searchTeams", JSON.stringify([]));
         localStorage.setItem("searchPlayers", JSON.stringify([]));
@@ -114,28 +111,22 @@ export default {
         const res = await this.axios.get(
           `${this.$store.state.server_domain}allUsers`,
         );
-        console.log(this.$store.state.userId)
         if (res.data.length > 0){
           this.$store.state.userId = res.data[0]
         }
-        console.log(res.data)
 
         this.$router.push("/");
         this.$root.toast("Login", `Welcome ${this.form.username}`, "success");
       } catch (err) {
-        // console.log(err.response);
         this.form.submitError = err.response.data;
       }
     },
     onLogin() {
-      // console.log("login method called");
       this.form.submitError = undefined;
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("login method go");
-
       this.Login();
     }
   }

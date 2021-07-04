@@ -302,19 +302,16 @@ export default {
         );
         this.$root.toast("New Game", "Game added successfuly", "success");
         this.onReset()
-        console.log(response);
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
       }
     },
     onSubmit() {
-      // console.log("register method called");
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("register method go");
       this.addMatch();
     },
     onReset() {

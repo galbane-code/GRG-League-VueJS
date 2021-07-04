@@ -37,7 +37,6 @@ export default {
     async getLeagueDetails(){
       try{
         const response = await this.axios.get("http://localhost:3000/league/getLeagueDetails",);
-        console.log(response)
         this.leagueName = response.data.league_name;
         this.season = response.data.current_season_name;
         this.stage = response.data.current_stage_name;

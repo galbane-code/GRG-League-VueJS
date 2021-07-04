@@ -52,7 +52,6 @@ export default {
         }
     },
     mounted(){
-        console.log("player page mounted");
         this.getPlayer()
     },
 }

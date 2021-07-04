@@ -69,6 +69,10 @@
               <div class="playersDiv" v-if="this.players.length > 0">
                 <h1 class="title">Players</h1>
                 <b-table id="playerTable" class="table" striped hover :items="this.players" :fields="this.playerFields">
+                  <template #cell(playerImage)="row">
+                    <!-- v-bind:src="row.item.image" ///////add it below --> 
+                    <img :src="row.item.image"  overlay class="rounded-circle">
+                  </template>
                 </b-table>
               </div>
               <div v-else>{{error}}</div>
@@ -76,7 +80,11 @@
 
               <div class="teamsDiv" v-if="this.teams.length > 0">
                 <h1 class="title">Teams</h1>
-                <b-table id="teamTable" class="table" striped hover :items="this.teams" :fields="this.teamFields"></b-table>
+                <b-table id="teamTable" class="table" striped hover :items="this.teams" :fields="this.teamFields">
+                  <template  #cell(logo)="row">
+                    <img :src="row.item.teamLogo" overlay class="rounded-circle">
+                  </template>
+                </b-table>
               </div>
               <div v-else>{{error}}</div>
               <br/>
@@ -102,15 +110,19 @@ export default {
  data() {
     return {
       teamFields: [{key: 'teamName', sortable: true},
-                  {key: 'teamLogo', sortable: false},
+                  {key: 'logo', sortable:false}
                   ],
       playerFields: [
               {key: 'player_id', sortable: false},
               {key: 'name', sortable: true},
-              {key: 'image', sortable: false},
+              {key: 'playerImage', sortable: false},
               {key: 'position', sortable: false},
               {key: 'team_name', sortable: true}              
               ],
+      srcImg: {
+        id: 'img',
+        src: "", 
+      },
       searchQuery:"",
       teams: [""],
       players: [""],
@@ -118,6 +130,37 @@ export default {
     };
   },
   methods: {
+    async loadTeamImages(){
+      let table = $("#teamTable");
+      table = table[0]
+
+      for (var i = 0, row; row = table.rows[i]; i++) {
+        for (var j = 0, col; col = row.cells[j]; j++) {
+          if (i != 0) {
+            row.cells[1].childNodes[0].click()
+          }
+          }
+        }
+    },
+    async loadPlayerImages(){
+      let table = $("#playerTable");
+      table = table[0]
+
+      for (var i = 0, row; row = table.rows[i]; i++) {
+        for (var j = 0, col; col = row.cells[j]; j++) {
+          if (i != 0) {
+            row.cells[2].childNodes[0].click()
+          }
+          }
+        }
+    },
+    async showTeamImage(event, teamLogo){
+      event.target.src = teamLogo
+    },
+    async showPlayerImage(event, playerImg){
+      event.target.src = playerImg
+      // this.srcImg.src = playerImg
+    },
     async searchTeams(){
       try{
         this.teams = [""];
@@ -128,6 +171,7 @@ export default {
         $("#teamInput").attr('disabled', false);
         localStorage.setItem("searchQuery", this.searchQuery)
         localStorage.setItem("searchPlayers", JSON.stringify([]))
+        localStorage.setItem("searchTeams", JSON.stringify([]))
 
         const response = await this.axios.get(
           `${this.$store.state.server_domain}teams/searchTeamByName/${this.searchQuery}`,
@@ -139,17 +183,13 @@ export default {
           let team = {};
           team.teamName = elem.team_name;
           team.teamLogo = elem.logo;
-          // this.$store.actions.pushTeamFromSearch(team.teamName)
           let allTeams = JSON.parse(localStorage.getItem("allTeams"));
           let index = allTeams.indexOf(elem.team_name);
-          if (index !== -1){
+
+          if (index == -1){
             allTeams.push(elem.team_name)
             localStorage.setItem("allTeams", JSON.stringify(allTeams))
-            console.log(allTeams)
-            console.log(JSON.parse(localStorage.getItem("allTeams")))
           }
-          //TODO: add team.teamName to the localStorage
-                      
           self.teams.push(team);
         });
 
@@ -158,7 +198,6 @@ export default {
         )
         this.teams = newTeams;
         localStorage.setItem("searchTeams", JSON.stringify(this.teams))
-        console.log(newTeams[0])
 
         this.addTeamEventListener();
 
@@ -188,10 +227,6 @@ export default {
           if (elem != null && ('player_id' in elem) && ('team_name' in elem)
           && ('name' in elem) && ('image' in elem)
           && ('position' in elem)){
-            // self.$store.actions.pushPlayer(elem.name, elem.player_id)
-            // this.$store.actions.pushTeamFromSearch(elem.team_name)
-
-            //TODO: add elem.teamName to the localStorage
             let allPlayers = JSON.parse(localStorage.getItem("allPlayers"));
             let allTeams = JSON.parse(localStorage.getItem("allTeams"));
             
@@ -210,7 +245,6 @@ export default {
         )
         this.players = newPlayers;
         localStorage.setItem("searchPlayers", JSON.stringify(this.players))
-        console.log(newPlayers[0])
 
         this.playerEventListener();
         this.addTeamEventListener();
@@ -258,12 +292,11 @@ export default {
     this.checkLastSearch()
   },
   beforeUpdate() {
+
     $(document).ready(function(){
       $("#playerInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#playerTable tbody tr").filter(function() {
-          console.log(this.cells[3].textContent)
-          console.log(value)
           $(this).toggle($(this.cells[3]).text().indexOf(value) > -1)
         });
       });
@@ -273,13 +306,16 @@ export default {
       $("#teamInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#teamTable tbody tr").filter(function() {
-          console.log(this.cells[0].textContent)
-          console.log(value)
           $(this).toggle($(this.cells[0]).text().toLowerCase().indexOf(value.toLowerCase()) > -1)
         });
       });
     });
   },
+  updated(){
+    // this.loadPlayerImages();
+    // this.loadTeamImages();
+     
+  }
 }
 </script>
 
