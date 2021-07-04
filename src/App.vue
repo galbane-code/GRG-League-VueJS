@@ -101,6 +101,7 @@ table tbody tr:last-of-type {
 
 .card-body
 {
+  height:80% ;
   border-radius:20px;
   color: #343a40 ;
   background-color:#87a8d1;
