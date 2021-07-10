@@ -216,6 +216,7 @@ export default {
         confirmedPassword: "",
         email: "",
         image_url: "",
+        imageValidate : true,
         submitError: undefined
       },
       countries: [{ value: null, text: "", disabled: true }],
@@ -269,17 +270,22 @@ export default {
     validateImage() {
       if(this.form.image_url.length == 0)
       {
+        this.imageValidate = true;
         return undefined;
       }
       if (/(https?:\/\/.*\.(?:png|jpg))/i.test(this.form.image_url)) {
+        this.imageValidate = true;
         return true;
       } else {
+        this.imageValidate = false;
         return false;
       }
     },
     async Register() {
       try {
-        const response = await this.axios.post(
+        if(this.imageValidate)
+        {
+          const response = await this.axios.post(
           "http://localhost:3000/Register",
           {
             username: this.form.username,
@@ -293,6 +299,7 @@ export default {
         );
         this.$router.push("/login");
         // console.log(response);
+        }
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
