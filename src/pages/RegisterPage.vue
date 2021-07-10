@@ -155,7 +155,12 @@
           id="imageUrl"
           type="text"
           v-model="$v.form.image_url.$model"
+          :state="validateImage()"
+          @blur="validateImage()"
         ></b-form-input>
+        <b-form-invalid-feedback id="input-live-feedback">
+          Enter A Valid Url With Https Prefix
+        </b-form-invalid-feedback>
         </b-form-group>
 
       <b-button type="reset" variant="info">Reset</b-button>
@@ -261,13 +266,29 @@ export default {
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
     },
+    validateImage() {
+      if(this.form.image_url.length == 0)
+      {
+        return undefined;
+      }
+      if (/(https?:\/\/.*\.(?:png|jpg))/i.test(this.form.image_url)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     async Register() {
       try {
         const response = await this.axios.post(
           "http://localhost:3000/Register",
           {
             username: this.form.username,
-            password: this.form.password
+            password: this.form.password,
+            firstname: this.form.firstName,
+            lastname: this.form.lastName,
+            country: this.form.country,
+            email: this.form.email,
+            image: this.form.image_url
           }
         );
         this.$router.push("/login");

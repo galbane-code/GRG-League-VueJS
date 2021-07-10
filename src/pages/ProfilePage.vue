@@ -30,7 +30,7 @@ export default {
             lastname: "",
             country:"",
             email :"",
-            image: ""
+            image: "https://i.ibb.co/87TRWg1/user-logo.png"
         };
     },
     methods: 
@@ -47,8 +47,8 @@ export default {
             this.lastname = userProfile.lastname;
             this.country = userProfile.country;
             this.email = userProfile.email;
-            console.log(userProfile.image);
-            if(!userProfile.image)
+
+            if(userProfile.image && userProfile.image.length != 0)
             {
                 this.image = userProfile.image;
             }

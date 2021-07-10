@@ -4,14 +4,15 @@
       style="width:100%; height:100%"
       class="mb-2"
     >
-      <b-card-title style="margin-left:15%; margin-right:35%">{{leagueName}}</b-card-title>
-      <b-card-text  style="margin-left:15%; margin-right:15%">
+      <b-card-title style="width:60%; margin-left:20%; margin-right:20%">{{leagueName}}</b-card-title>
+      <b-card-text  style="margin-left:15%; margin-right:15%;">
         Season: {{ season }}
         <br/>
         Stage: {{ stage }}
         <br/>
         Next Game: {{ nextGame }}
       </b-card-text>
+
       <!-- <b-button :to="{name: 'currentStage'}" variant="primary">Stage Games Table</b-button> -->
     </b-card>
   </div>

@@ -1,5 +1,5 @@
 <template>
-<div class= "container">
+<div class= "container" style="height:80%">
     <h1 class="test2">About Us</h1>
     <div class="row">
         <div class="column">
@@ -22,13 +22,26 @@
     <div class="row">
         <b-button pill href= 'https://web-development-environments-2021.github.io/assignment2-205413149_316612803_312198310/' style="width:50%;margin-left:25%;margin-right:25%">PacMan Project</b-button>
     </div>
+    <audio controls autoplay hidden loop id="myaudio" >
+        <source src="..\assets\uefa.mp3" type="audio/mpeg">
+    </audio>
 </div>
 </template>
 
 <script>
 export default {
 
+       methods: {
+        async changeAudioVolume()
+        {
+            document.getElementById("myaudio").volume = 0.1;
+        }
+    },
+    mounted(){
+        this.changeAudioVolume()
+    },
 }
+
 </script>
 
 <style>
